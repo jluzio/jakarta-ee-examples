@@ -1,4 +1,4 @@
-package com.example.wildfly.api;
+package com.example.jee.wildfly.api;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

@@ -1,4 +1,4 @@
-package com.example.wildfly.api;
+package com.example.jee.wildfly.api;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.ApplicationPath;
