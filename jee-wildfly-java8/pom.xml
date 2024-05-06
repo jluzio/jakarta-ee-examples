@@ -75,9 +75,10 @@
         <configuration>
           <!--
             server-config:
-              - full profile: standalone-full.xml
-              - web profile/core: standalone.xml
-              - default: standalone.xml
+							- full profile: standalone-full.xml
+					  	- web profile: standalone.xml
+					  	- microprofile: standalone-microprofile.xml
+					  	- default: standalone.xml
             version:
               - default: latest
           -->
@@ -86,7 +87,7 @@
           <version>${wildfly.version}</version>
         </configuration>
       </plugin>
-  </plugins>
-</build>
+    </plugins>
+  </build>
 
-  </project>
+</project>
