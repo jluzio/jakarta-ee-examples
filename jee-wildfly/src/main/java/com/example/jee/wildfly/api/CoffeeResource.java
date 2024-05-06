@@ -16,14 +16,12 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
-import java.util.logging.Logger;
+import lombok.extern.jbosslog.JBossLog;
 
 @Path("coffees")
+@JBossLog
 public class CoffeeResource {
-
-  private final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
   @Inject
   private CoffeeRepository cafeRepository;
@@ -32,7 +30,7 @@ public class CoffeeResource {
   @Path("{id}")
   @Produces(APPLICATION_JSON)
   public Coffee findCoffee(@PathParam("id") Long id) {
-    logger.info("Getting coffee by id " + id);
+    log.infof("Getting coffee by id %s", id);
     return cafeRepository.findById(id)
         .orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
   }
@@ -40,7 +38,7 @@ public class CoffeeResource {
   @GET
   @Produces(APPLICATION_JSON)
   public List<Coffee> findAll() {
-    logger.info("Getting all coffee");
+    log.infof("Getting all coffee");
     return cafeRepository.findAll();
   }
 
@@ -48,11 +46,11 @@ public class CoffeeResource {
   @Consumes(APPLICATION_JSON)
   @Produces(APPLICATION_JSON)
   public Coffee create(Coffee coffee) {
-    logger.info("Creating coffee " + coffee.getName());
+    log.infof("Creating coffee %s", coffee.getName());
     try {
       return cafeRepository.create(coffee);
     } catch (PersistenceException ex) {
-      logger.info("Error creating coffee " + coffee.getName());
+      log.infof("Error creating coffee " + coffee.getName());
       throw new WebApplicationException(Response.Status.BAD_REQUEST);
     }
   }
@@ -60,11 +58,11 @@ public class CoffeeResource {
   @DELETE
   @Path("{id}")
   public void delete(@PathParam("id") Long id) {
-    logger.info("Deleting coffee by id " + id);
+    log.infof("Deleting coffee by id %s", id);
     try {
       cafeRepository.delete(id);
     } catch (IllegalArgumentException e) {
-      logger.info("Error deleting coffee by id " + id);
+      log.infof("Error deleting coffee by id %s", id);
       throw new WebApplicationException(Response.Status.NOT_FOUND);
     }
   }
@@ -74,11 +72,11 @@ public class CoffeeResource {
   @Consumes(APPLICATION_JSON)
   @Produces(APPLICATION_JSON)
   public Coffee update(Coffee coffee) {
-    logger.info("Updating coffee " + coffee.getName());
+    log.infof("Updating coffee %s", coffee.getName());
     try {
       return cafeRepository.create(coffee);
     } catch (PersistenceException ex) {
-      logger.info("Error updating coffee " + coffee.getName());
+      log.infof("Error updating coffee %s", coffee.getName());
       throw new WebApplicationException(Response.Status.BAD_REQUEST);
     }
   }
