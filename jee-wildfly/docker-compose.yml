@@ -19,7 +19,7 @@ services:
     environment:
 #      POSTGRES_DB: postgres
 #      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: changeme
+      POSTGRES_PASSWORD: changeit
 
   adminer:
     image: adminer:4.8.1
