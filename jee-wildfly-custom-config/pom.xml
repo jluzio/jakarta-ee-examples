@@ -14,11 +14,25 @@
 		<maven.compiler.release>21</maven.compiler.release>
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<wildfly.version>32.0.0.Final</wildfly.version>
+		<ee.bom.version>${wildfly.version}</ee.bom.version>
 		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<maven-war-plugin.version>3.4.0</maven-war-plugin.version>
 		<wildfly-maven-plugin.version>5.0.0.Final</wildfly-maven-plugin.version>
 		<jboss-logging.version>3.5.3.Final</jboss-logging.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				        <artifactId>wildfly-ee-with-tools</artifactId>
+<!--				<artifactId>wildfly-jakartaee8-with-tools</artifactId>-->
+				<version>${ee.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
