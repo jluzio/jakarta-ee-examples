@@ -27,8 +27,8 @@
     <dependencies>
       <dependency>
         <groupId>org.wildfly.bom</groupId>
-        <!--        <artifactId>wildfly-ee-with-tools</artifactId>-->
         <artifactId>wildfly-jakartaee8-with-tools</artifactId>
+<!--        <artifactId>wildfly-jakartaee8</artifactId>-->
         <version>${ee.bom.version}</version>
         <type>pom</type>
         <scope>import</scope>
