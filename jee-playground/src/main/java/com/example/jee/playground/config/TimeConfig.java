@@ -1,8 +1,8 @@
 package com.example.jee.playground.config;
 
-import java.time.Clock;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import java.time.Clock;
 
 @ApplicationScoped
 public class TimeConfig {

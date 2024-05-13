@@ -2,13 +2,13 @@ package com.example.jee.playground.api.config;
 
 import com.example.jee.playground.config.ConfigProperties;
 import com.example.jee.playground.config.ConfigPropertiesFactory;
-import java.io.IOException;
-import java.util.Map;
-import java.util.stream.Collectors;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Path("config")
 public class ConfigResource {

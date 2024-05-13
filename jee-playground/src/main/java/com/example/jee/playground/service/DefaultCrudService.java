@@ -9,13 +9,13 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class DefaultCrudService<S, E extends Identifiable<ID>, ID> implements CrudService<S, E, ID> {
+public class DefaultCrudService<S, E extends Identifiable<ID>, ID, R extends CrudRepository<E, ID>>
+    implements CrudService<S, E, ID> {
 
-  protected final CrudRepository<E, ID> repository;
+  protected final R repository;
   protected final Function<S, E> mapToPersistence;
   protected final Function<E, S> mapToPresentation;
   protected final BinaryOperator<E> updatePatch;
@@ -32,7 +32,7 @@ public class DefaultCrudService<S, E extends Identifiable<ID>, ID> implements Cr
   public List<S> findAll() {
     return repository.findAll().stream()
         .map(mapToPresentation)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

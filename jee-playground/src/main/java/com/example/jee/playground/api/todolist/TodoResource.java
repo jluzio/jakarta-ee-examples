@@ -1,5 +1,6 @@
 package com.example.jee.playground.api.todolist;
 
+import com.example.jee.playground.persistence.model.TodoSearchRequest;
 import com.example.jee.playground.service.TodoService;
 import com.example.services.todolist.api.v1.TodoApi;
 import com.example.services.todolist.api.v1.model.Todo;
@@ -30,7 +31,7 @@ public class TodoResource implements TodoApi {
 
   @Override
   public List<Todo> listTodos(Long userId, String userUsername, Boolean completed) {
-    return todoService.findAll();
+    return todoService.search(new TodoSearchRequest(userId, userUsername, completed));
   }
 
   @Override

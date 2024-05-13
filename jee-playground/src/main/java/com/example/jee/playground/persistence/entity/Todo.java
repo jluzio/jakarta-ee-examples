@@ -1,5 +1,6 @@
 package com.example.jee.playground.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +38,9 @@ public class Todo implements Serializable, Identifiable<Long> {
   @NotNull
   private boolean completed;
   @NotNull
+  @Column(name = "created_date")
   private Instant createdDate;
+  @Column(name = "completed_date")
   private Instant completedDate;
   @ManyToOne
   private User user;

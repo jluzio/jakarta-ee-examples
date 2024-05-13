@@ -1,5 +1,6 @@
 package com.example.jee.playground.api.todolist;
 
+import com.example.jee.playground.persistence.model.UserSearchRequest;
 import com.example.jee.playground.service.UserService;
 import com.example.services.todolist.api.v1.UserApi;
 import com.example.services.todolist.api.v1.model.Todo;
@@ -31,7 +32,7 @@ public class UserResource implements UserApi {
 
   @Override
   public List<User> listUsers(String name, String username) {
-    return userService.findAll();
+    return userService.search(new UserSearchRequest(name, username));
   }
 
   @Override
