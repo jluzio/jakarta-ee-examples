@@ -1,4 +1,2 @@
-INSERT INTO coffee (name, price) VALUES ('Coffee-A', 2.75);
-INSERT INTO coffee (name, price) VALUES ('Coffee-B', 1.99);
-INSERT INTO coffee (name, price) VALUES ('Coffee-C', 3.25);
-INSERT INTO coffee (name, price) VALUES ('Coffee-D', 2.99);
+INSERT INTO users (name, username, email) VALUES ('John Doe', 'john.doe', 'john.doe@mail.org');
+INSERT INTO users (name, username, email) VALUES ('Jane Doe', 'jane.doe', 'jane.doe@mail.org');
