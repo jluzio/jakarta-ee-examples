@@ -6,11 +6,14 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("config")
+@Produces(MediaType.APPLICATION_JSON)
 public class ConfigResource {
 
   @Inject
