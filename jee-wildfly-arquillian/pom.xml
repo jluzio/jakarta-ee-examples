@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example.jee</groupId>
+  <artifactId>jee-wildfly-arquillian</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.report.sourceEncoding>UTF-8</project.report.sourceEncoding>
+    <maven.compiler.release>21</maven.compiler.release>
+    <jakartaee-api.version>10.0.0</jakartaee-api.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    <jboss-logging.version>3.5.3.Final</jboss-logging.version>
+    <openapi-generator-maven-plugin.version>7.5.0</openapi-generator-maven-plugin.version>
+    <lombok.version>1.18.32</lombok.version>
+
+    <wildfly.version>32.0.0.Final</wildfly.version>
+<!--    <wildfly-full.version>32.0.0.Final</wildfly-full.version>-->
+    <wildfly-full.version>31.0.0.Final</wildfly-full.version>
+    <ee.bom.version>${wildfly.version}</ee.bom.version>
+    <wildfly-maven-plugin.version>5.0.0.Final</wildfly-maven-plugin.version>
+    <galleon-maven-plugin.version>5.2.0.Final</galleon-maven-plugin.version>
+
+    <!-- Galleon -->
+    <galleon.fork.embedded>true</galleon.fork.embedded>
+    <galleon.log.time>true</galleon.log.time>
+    <galleon.offline>false</galleon.offline>
+    <jboss.home>${project.build.directory}${file.separator}wildfly</jboss.home>
+<!--    <jboss.home>${project.build.directory}${file.separator}server</jboss.home>-->
+    <galleon.feature.pack.artifactId>wildfly-ee-galleon-pack</galleon.feature.pack.artifactId>
+    <galleon.feature.pack.location>wildfly@maven(org.jboss.universe:community-universe)#${wildfly-full.version}</galleon.feature.pack.location>
+
+    <!-- Other properties -->
+    <wildfly.standalone.config>standalone.xml</wildfly.standalone.config>
+
+    <maven.test.skip>false</maven.test.skip>
+    <skipTests>${maven.test.skip}</skipTests>
+    <galleon.skip>${skipTests}</galleon.skip>
+
+    <!-- Surefire properties -->
+    <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+    <default.jvm.args>-Dmaven.repo.local=${settings.localRepository}</default.jvm.args>
+    <jvm.args>${default.jvm.args}</jvm.args>
+    <debug.vm.args />
+<!--    <debug.vm.args>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${debug.port}</debug.vm.args>-->
+    <debug.port>8787</debug.port>
+  </properties>
+
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+      <id>jboss-public-repository</id>
+      <name>JBoss Public Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+      <id>jboss-enterprise-maven-repository</id>
+      <name>JBoss Enterprise Maven Repository</name>
+      <url>https://maven.repository.redhat.com/ga/</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.wildfly.bom</groupId>
+        <!--				<artifactId>wildfly-ee-with-tools</artifactId>-->
+        <artifactId>wildfly</artifactId>
+        <!--				<artifactId>wildfly-jakartaee8-with-tools</artifactId>-->
+        <version>${ee.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+<!--        <version>1.8.0.Final</version>-->
+        <version>1.7.0.Final</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>${jakartaee-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging</artifactId>
+      <version>${jboss-logging.version}</version>
+      <!--			<scope>provided</scope>-->
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.junit5</groupId>
+      <artifactId>arquillian-junit5-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.protocol</groupId>
+      <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.arquillian</groupId>
+      <artifactId>wildfly-arquillian-container-managed</artifactId>
+      <version>5.0.1.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>jee-wildfly-arquillian</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${maven-war-plugin.version}</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+
+      <!-- Execute 'mvn clean package wildfly:dev' to run the application. -->
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>${wildfly-maven-plugin.version}</version>
+        <configuration>
+          <!--
+            server-config:
+              - full profile: standalone-full.xml
+              - web profile: standalone.xml
+              - microprofile: standalone-microprofile.xml
+              - default: standalone.xml
+            version:
+              - default: latest
+          -->
+          <debug>true</debug>
+          <server-config>standalone-full.xml</server-config>
+          <!--					<version>${wildfly.version}</version>-->
+          <skip>${skipTests}</skip>
+          <provisioning-dir>${jboss.home}</provisioning-dir>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jboss.galleon</groupId>
+        <artifactId>galleon-maven-plugin</artifactId>
+        <version>${galleon-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>server-provisioning</id>
+            <goals>
+              <goal>provision</goal>
+            </goals>
+            <configuration>
+              <install-dir>${jboss.home}</install-dir>
+              <skip>${galleon.skip}</skip>
+              <record-state>false</record-state>
+              <log-time>${galleon.log.time}</log-time>
+              <offline>${galleon.offline}</offline>
+              <plugin-options>
+                <!-- TODO (jrp) re-enable when WildFly is Jakarta EE 9 -->
+                <!-- <jboss-maven-dist/> -->
+                <jboss-fork-embedded>${galleon.fork.embedded}</jboss-fork-embedded>
+                <optional-packages>passive+</optional-packages>`
+              </plugin-options>
+              <feature-packs>
+                <feature-pack>
+                  <groupId>org.wildfly</groupId>
+                  <artifactId>${galleon.feature.pack.artifactId}</artifactId>
+                  <version>${wildfly-full.version}</version>
+                  <excluded-packages>
+                    <name>product.conf</name>
+                    <name>docs.schema</name>
+                  </excluded-packages>
+                </feature-pack>
+              </feature-packs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
+          <systemPropertyVariables>
+            <jboss.home>${jboss.home}</jboss.home>
+            <debug.vm.args>${debug.vm.args}</debug.vm.args>
+            <jvm.args>${jvm.args}</jvm.args>
+          </systemPropertyVariables>
+          <environmentVariables>
+            <JBOSS_HOME>${jboss.home}</JBOSS_HOME>
+          </environmentVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <groups>!OverrideWebUri</groups>
+            </configuration>
+          </execution>
+          <execution>
+            <id>override-web-uri</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <groups>OverrideWebUri</groups>
+              <systemPropertyVariables>
+                <arquillian.xml>override-web-uri-arquillian.xml</arquillian.xml>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>debug</id>
+      <activation>
+        <property>
+          <name>debug</name>
+        </property>
+      </activation>
+      <properties>
+        <debug.vm.args>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:${debug.port}</debug.vm.args>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>
