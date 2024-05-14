@@ -1,4 +1,4 @@
-package com.example.jee.playground.api.todolist;
+package com.example.jee.playground.api;
 
 
 import com.example.services.todolist.api.RestApplication;

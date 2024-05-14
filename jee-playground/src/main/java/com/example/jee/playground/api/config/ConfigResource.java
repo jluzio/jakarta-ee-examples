@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Path("config")
+@Path("api/config")
 @Produces(MediaType.APPLICATION_JSON)
 public class ConfigResource {
 
